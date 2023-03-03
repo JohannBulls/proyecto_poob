@@ -123,7 +123,22 @@ public class Room
             guardia = new Guard(color);
             guardia.makeInvisible();
             guardia.makeVisible();
-            moveGuard(walls[0][0],walls[0][1]);
+            int ry = walls[0][1];
+            int rx =walls[0][0];
+            for (int i=0; i<walls.length;i++){
+                if(walls[i][1]<ry){
+                    ry= walls[i][1];
+                    rx =walls[i][0];
+                }
+            }
+            for (int j=0; j<walls.length;j++){
+                if (walls[j][1] == ry && walls[j][0]<rx){
+                    rx =walls[j][0];
+                }
+            }
+            //{{0,0},{20,0},{20,30},{60,30},{60,0},{80,0},{80,50},{0,50}}
+            moveGuard(rx,ry+15);
+            
         }else{
             throw new GalleryExecption(GalleryExecption.RoomHasGuard);
         }
@@ -135,8 +150,12 @@ public class Room
      * @param y The y position.
      */
     public void moveGuard(int x,int y) throws GalleryExecption{
+        System.out.println("y  ->"+y);
+        System.out.println("x -> "+x);
         if(poligono.contains(x,y)){
-            guardia.moveGuard(x+15,length-y-15);
+            System.out.println("y  -"+y);
+            System.out.println("x - "+x);
+            guardia.moveGuard(x+5,length - y);
             makeVisible();
         }else{
             throw new GalleryExecption(GalleryExecption.OutOfTheRoom);
