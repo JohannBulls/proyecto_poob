@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Wall
+comment0.text=\r\n\ Let\ me\ create\ and\ modify\ Intersections.\r\n\ \r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.0\r\n
+comment1.params=X1\ Y1\ X2\ Y2
+comment1.target=Wall(double,\ double,\ double,\ double)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Line\r\n
+comment2.params=color
+comment2.target=void\ draw(java.lang.String)
+comment2.text=\r\n\ Draw\ a\ line\ in\ canvas\r\n\ @\ the\ line's\ color\r\n
+comment3.params=
+comment3.target=void\ erase()
+comment3.text=\r\n\ Erase\ a\ line\ in\ canvas\r\n\ @\ the\ line's\ color\r\n
+numComments=4

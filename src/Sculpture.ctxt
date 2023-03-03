@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Sculpture
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Sculpture\ here.\r\n\r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.0\r\n
+comment1.params=color\ x\ y\ length
+comment1.target=Sculpture(java.lang.String,\ int,\ int,\ int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Sculpture\r\n
+comment2.params=
+comment2.target=void\ makeVisible()
+comment2.text=\r\n\ Let\ me\ make\ visible\ the\ rooms\ on\ the\ Sculpture\r\n
+comment3.params=
+comment3.target=void\ makeInvisible()
+comment3.text=\r\n\ Let\ me\ make\ visible\ the\ rooms\ on\ the\ Sculpture\r\n
+comment4.params=color
+comment4.target=void\ changeColor(java.lang.String)
+comment4.text=\r\n\ Let\ me\ change\ the\ color\ of\ the\ sculpture.\r\n\ @Param\ color\ the\ color\ of\ the\ room.\r\n
+numComments=5
