@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Polygon;
 import java.awt.geom.Line2D;
+import java.lang.Math;
 
 /**
  * Let me create an interate a room.
@@ -23,6 +24,8 @@ public class Room
     private Sculpture escultura;
     private Alarm alarma;
     private Rectangle repSala;
+    private List<int[]> posiciones  = new ArrayList<>();
+    private Wall[] repMovimiento;
     /**
      * Constructor for objects of class Room
      * @throw GalleryException
@@ -211,9 +214,16 @@ public class Room
     
     /**
      * Return the guard's Positions
+     * @throw GalleryException.
      */
-    public int[] guardLocation(){
-        return guardia.location();
+    public int[] guardLocation()throws GalleryException{
+        int[] location;
+        if(guardia != null){
+            location = guardia.location();
+        }else{
+            throw new GalleryException(GalleryException.RoomHasNotGuard);
+        }
+        return location;
     }
     
     /**
@@ -300,5 +310,48 @@ public class Room
             hasSculpture = false;
         }
         return hasSculpture;
+    }
+    
+    /**
+     * validate if the alarm was activated without having stolen the sculpture.
+     */
+    public boolean falseAlarm(){
+        boolean falseAlarm = false;
+        if(alarma.state() && escultura != null){
+            falseAlarm = true;
+        }
+        return falseAlarm;
+    }
+    
+    /**
+     * Let me know the distance traveled for the guard to be able to see the sculpture.
+     * @throw GalleryException
+     */
+    public float distanceTraveled() throws GalleryException{
+        float distancia =0;
+        if(!guardSeeTheSculpture()){
+            moveToSeeTheSculpture();
+            for(int i =1;i<posiciones.size();i++){
+                distancia += calculate(posiciones.get(i-1),posiciones.get(i));
+            }
+        }else{
+            throw new GalleryException(GalleryException.GuardNotMove);
+        }
+        return distancia;
+    }
+    
+    /**
+     * Move the guard for he could see the sculpture.
+     */
+    private void moveToSeeTheSculpture(){
+    
+    }
+    
+    /**
+     * calculate the length of the line
+     */
+    private float calculate(int[] punto1,int[] punto2){
+        float distance =(float) Math.sqrt(((punto2[0]-punto1[0])*(punto2[0]-punto1[0]))+((punto2[1]-punto1[1])*(punto2[1]-punto1[1])));
+        return distance;
     }
 }

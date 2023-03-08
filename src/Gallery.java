@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Let me create a galery
@@ -203,17 +204,63 @@ public class Gallery
     /**
      * Let me know the guard's position of the room.
      * @Param room the room's color.
+     * @throw GalleryException
      */
-    public int[] guardLocation(String room){
-        return rooms.get(room).guardLocation();
+    public int[] guardLocation(String room) throws GalleryException{
+        confirm = true;
+        int[] location = {0};
+        try{
+            if(rooms.containsKey(room)){
+                location = rooms.get(room).guardLocation();
+            }else{
+                throw new GalleryException(GalleryException.RoomNotExist);
+            }
+        }catch(GalleryException e){
+            exepcion = e.getMessage();
+            confirm = false;
+        }
+        return location;
     }  
     
     /**
      * Let me know the sculpture's position of the room.
      * @Param room the room's color.
+     * @throw GalleryException
      */
-    public int[] sculptureLocation(String room){
-        return rooms.get(room).sculptureLocation();
+    public int[] sculptureLocation(String room) throws GalleryException{
+        confirm = true;
+        int[] location;
+        try{
+            if(rooms.containsKey(room)){
+                location = rooms.get(room).sculptureLocation();
+            }else{
+                throw new GalleryException(GalleryException.RoomNotExist);
+            }
+        }catch(GalleryException e){
+            exepcion = e.getMessage();
+            confirm = false;
+        }
+        return location;
+    }
+    
+    /**
+     * Let me know the distance traveled for the guard to be able to see the sculpture.
+     * @param room The room's sculpture.
+     */
+    public float distanceTraveled(String room){
+        float distance;
+        confirm = true;
+        try{
+            if(rooms.containsKey(room)){
+                distance = rooms.get(room).distanceTraveled();
+            }else{
+                throw new GalleryException(GalleryException.RoomNotExist);
+            }
+        }catch(GalleryException e){
+            exepcion = e.getMessage();
+            confirm = false;
+        }
+        return distance;
     }
     
     /**
@@ -232,7 +279,17 @@ public class Gallery
      * validate if the alarm was activated without having stolen the sculpture 
      */
     public String[] roomsWithFalseAlarm(){
-        
+        List<String> auxiliar = new ArrayList<String>();
+        for(String i: rooms.keySet()){    
+            if(rooms.get(i).falseAlarm()){
+                auxiliar.add(i);
+            }
+        }
+        String[] falseAlarm = new String[auxiliar.size()];
+        for(int i =0;i<auxiliar.size();i++){    
+            falseAlarm[i] = auxiliar.get(i);
+        }
+        return falseAlarm;
     }
     
     /**
