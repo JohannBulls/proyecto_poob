@@ -53,4 +53,12 @@ public class Guard
     public void changeColor(String color){
         guardia.changeColor(color);
     }
+    
+    /**
+     * Return its position
+     */
+    public int[] location(){
+        int[] posiciones ={xPos,yPos};
+        return posiciones;
+    }
 }

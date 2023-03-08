@@ -48,4 +48,12 @@ public class Sculpture
     public void changeColor(String color){
         circle.changeColor(color);
     }
+    
+    /**
+     * Return its position
+     */
+    public int[] location(){
+        int[] posiciones ={x,y};
+        return posiciones;
+    }
 }

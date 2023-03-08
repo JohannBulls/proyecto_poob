@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * Let me create a galery
@@ -12,19 +13,20 @@ public class Gallery
 {
     private HashMap<String,Room> rooms = new HashMap();
     private int length;
+    private int width;
     private String exepcion;
     private boolean confirm;
-    private boolean problem;
+    private boolean problem = true;
     /**
      * Constructor for objects of class Galery.
-     * @author length The length of the galery.
-     * @author width The width of the galery.
+     * @Param length The length of the galery.
+     * @Param width The width of the galery.
      */
     public Gallery(int length,int width)
     {
-        Canvas galeria = Canvas.getCanvas("Galeria",length,width);
+        Canvas galeria = Canvas.getCanvas("Galeria",length+100,width);
         this.length = length;
-        problem = false;
+        this.width = width;
         galeria.redraw1();
     }
     
@@ -35,12 +37,13 @@ public class Gallery
      * @Param sculpture Is the positions of the sculpture
      */
     public Gallery(int[][] polygon, int[] guard, int[] sculpture){
-        new Gallery(680,1300);
+        new Gallery(300,300);
         confirm = true;
+        problem = false;
         try{
             buildRoom("black",polygon);
-            problem = true;
             Room sala = rooms.get("black");
+            makeVisible();
             sala.arrivedGuard();
             sala.moveGuard(guard[0],guard[1]);
             sala.displaySculpture(sculpture[0],sculpture[1]);
@@ -54,22 +57,28 @@ public class Gallery
      * Let me create a room.
      * @param color the color of the room's wall.
      * @param polygon the position of the vertices of the polygon.
-     * @throws 
+     * @throws GalleryException
      */
-    public void buildRoom(String color, int[][] polygon) throws GalleryExecption{
+    public void buildRoom(String color, int[][] polygon) throws GalleryException{
         confirm = true;
         try{
-            if(!problem){
+            if(problem || rooms.size()==0){
                 if(!rooms.containsKey(color)){
-                    Room room = new Room(color,polygon,length);
-                    rooms.put(color,room);
+                    intersect(polygon);
+                    if(confirm){
+                        Room room = new Room(color,polygon,width);
+                        rooms.put(color,room);
+                        rooms.get(color).alarm(rooms.size(),length);
+                    }else{
+                        throw new GalleryException(GalleryException.IntersectRoom);  
+                    }
                 }else{
-                    throw new GalleryExecption(GalleryExecption.RoomExist);
+                    throw new GalleryException(GalleryException.RoomExist);
                 }
             }else{
-                throw new GalleryExecption(GalleryExecption.Problem);
+                throw new GalleryException(GalleryException.Problem);
             }
-        }catch(GalleryExecption e){
+        }catch(GalleryException e){
             exepcion = e.getMessage();
             confirm = false;
         }
@@ -87,9 +96,9 @@ public class Gallery
             if(rooms.containsKey(room)){
                 rooms.get(room).displaySculpture(x,y);
             }else{
-                throw new GalleryExecption(GalleryExecption.RoomNotExist);
+                throw new GalleryException(GalleryException.RoomNotExist);
             }
-        }catch(GalleryExecption e){
+        }catch(GalleryException e){
             exepcion = e.getMessage();
             confirm = false;
         }
@@ -105,9 +114,9 @@ public class Gallery
             if(rooms.containsKey(room)){
                 rooms.get(room).arrivedGuard();
             }else{
-                throw new GalleryExecption(GalleryExecption.RoomNotExist);
+                throw new GalleryException(GalleryException.RoomNotExist);
             }
-        }catch(GalleryExecption e){
+        }catch(GalleryException e){
             exepcion = e.getMessage();
             confirm = false;
         }
@@ -123,7 +132,7 @@ public class Gallery
         confirm = true;
         try{
             rooms.get(room).moveGuard(x,y);
-        }catch(GalleryExecption e){
+        }catch(GalleryException e){
             exepcion = e.getMessage();
             confirm = false;
         }
@@ -133,9 +142,31 @@ public class Gallery
      * Let's create the room's alarm.
      * @Param room The name of the room.
      * @Param on The alarm state.
+     * @throws GalleryException
      */
-    public void alarm(String room, boolean on){
+    public void alarm(String room, boolean on)throws GalleryException{
+        confirm = true;
+        if(rooms.containsKey(room)){
+            rooms.get(room).alarm(on);
+        }else{
+            confirm = false;
+            throw new GalleryException(GalleryException.RoomNotExist);
+        }
+    }
     
+    /**
+     * Steal the room's sculpture if the guard doesn't see it.
+     */
+    public void steal(){
+        confirm = true;
+        try{
+            for(String i:rooms.keySet()){
+                rooms.get(i).steal();
+            }
+        }catch(GalleryException e){
+            exepcion = e.getMessage();
+            confirm = false;
+        }
     }
     
     /**
@@ -151,18 +182,58 @@ public class Gallery
         Arrays.sort(salas);
         return salas;
     }
-    /*
-    public String[] roomsOnAlert(){
     
+    /**
+     * Let me know which the rooms tha it's alarms are turned on
+     */
+    public String[] roomsOnAlert(){
+        ArrayList<String> roomsOnAlert = new ArrayList<String>();
+        for(String room: rooms.keySet()){
+            if(rooms.get(room).alarmTurnOf()){
+                roomsOnAlert.add(room);
+            }  
+        }
+        String[] room = new String[roomsOnAlert.size()];
+        for(int i=0;i<roomsOnAlert.size();i++){
+            room[i] = roomsOnAlert.get(i);
+        }
+        return room;
     }
     
+    /**
+     * Let me know the guard's position of the room.
+     * @Param room the room's color.
+     */
     public int[] guardLocation(String room){
-    
+        return rooms.get(room).guardLocation();
     }  
     
+    /**
+     * Let me know the sculpture's position of the room.
+     * @Param room the room's color.
+     */
     public int[] sculptureLocation(String room){
+        return rooms.get(room).sculptureLocation();
+    }
     
-    }*/
+    /**
+     * Let me know if the room has an sculpture
+     * @param room The name of the room
+     */
+    public boolean sculpturePresent(String room){
+        boolean hasSculpture = true;
+        for(String i: rooms.keySet()){    
+            hasSculpture = rooms.get(i).hasSculpture();
+        }
+        return hasSculpture;
+    }
+    
+    /**
+     * validate if the alarm was activated without having stolen the sculpture 
+     */
+    public String[] roomsWithFalseAlarm(){
+        
+    }
     
     /**
      * Let me make visible the rooms on the gallery
@@ -179,6 +250,24 @@ public class Gallery
     public void makeInvisible(){
         for(String i: rooms.keySet()){    
             rooms.get(i).makeInvisible();
+        }
+    }
+    
+    /**
+     * Lets me know if it intersects with another room
+     * @param polygon the position of the vertices of the polygon.
+     * @throws GalleryException
+     */
+    private void intersect(int[][] polygon)throws GalleryException{
+        try{
+            for(String r: rooms.keySet()){
+                if(rooms.get(r).intersect(polygon)){
+                    throw new GalleryException(GalleryException.IntersectRoom);
+                }
+            }
+        }catch(GalleryException e){
+            exepcion = e.getMessage();
+            confirm = false;
         }
     }
     
@@ -200,4 +289,3 @@ public class Gallery
         System.exit(0);
     }
 }
-

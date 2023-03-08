@@ -35,4 +35,12 @@ public class Wall
         Canvas canvas = Canvas.getCanvas();
         canvas.erase(this);
     }
+    
+    /**
+     * Return the line
+     * @Param linea The other line
+     */
+    public Line2D getLine(){
+        return line;
+    }
 }
