@@ -54,26 +54,25 @@ public class Gallery
      * Let me create a room.
      * @param color the color of the room's wall.
      * @param polygon the position of the vertices of the polygon.
-     * @throws 
+     * @throws GalleryExecption when a room with the same color already exists or there is a problem building the room.
      */
     public void buildRoom(String color, int[][] polygon) throws GalleryExecption{
         confirm = true;
         try{
-            if(!problem){
-                if(!rooms.containsKey(color)){
-                    Room room = new Room(color,polygon,length);
-                    rooms.put(color,room);
-                }else{
-                    throw new GalleryExecption(GalleryExecption.RoomExist);
-                }
-            }else{
-                throw new GalleryExecption(GalleryExecption.Problem);
+            if(problem){ //se cambió la condición para lanzar una excepción solo si hay un problema construyendo la galería
+            throw new GalleryExecption(GalleryExecption.Problem);
             }
+            if(rooms.containsKey(color)){ //se agregó esta condición para verificar si la habitación ya existe
+            throw new GalleryExecption(GalleryExecption.RoomExist);
+            }
+            Room room = new Room(color,polygon,length);
+            rooms.put(color,room);
         }catch(GalleryExecption e){
             exepcion = e.getMessage();
             confirm = false;
+            throw e; //se lanza la excepción nuevamente para que el llamador también la maneje
         }
-    } 
+    }
     
     /**
      * Let me put a sculpture in a room.
