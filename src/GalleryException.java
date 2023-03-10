@@ -19,6 +19,7 @@ public class GalleryException extends Exception
     public static final String IntersectRoom = "No se puede crear la sala dado que se interseca con otra sala";
     public static final String CouldNotCreateRoom = "No se puede crear la sala dado que no tiene una forma adecuada";
     public static final String GuardNotMove = "El guardia no tiene la necesidad de moverse";
+    public static final String AlarmNotChange = "No se cambio el estado de la alarma";
     /**
      * Lanza las exepciones creadas.
      * @param Recibe un mensaje String msm

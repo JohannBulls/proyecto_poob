@@ -15,7 +15,7 @@ public class Room
 {
     private int[][] walls;
     private boolean isVisible = false;
-    private Wall[] lines;
+    private Wall[] lineas;
     private String color;
     private Guard guardia;
     private int length;
@@ -32,24 +32,21 @@ public class Room
      */
     public Room(String color,int[][] polygon,int length) throws GalleryException
     {
-        try{
-            walls = polygon;
-            this.color = color;
-            this.length =length;
-            lines = buildWalls(walls);
-            couldCreateRoom(walls);
-            createPolygon(walls);
-            poligono = createPolygon(walls);
-        }catch(GalleryException e){
+        walls = polygon;
+        this.color = color;
+        this.length =length;
+        lineas = buildWalls(walls);
+        //boolean couldCreate = couldCreateRoom(walls);
+        poligono = createPolygon(walls);
+        /*if(!couldCreate){
             throw new GalleryException(GalleryException.CouldNotCreateRoom);
-        }
+        }*/
     }
 
     /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * Let me make the walls of the rooms
+     * @param  polygon the matrix with all vertices of the room
+     * @return  the matirx of the walls
      */
     private Wall[] buildWalls(int[][] polygon)
     {
@@ -69,7 +66,7 @@ public class Room
     public void makeVisible(){
         isVisible = true;
         if(isVisible){
-            for(Wall i: lines){
+            for(Wall i: lineas){
                 i.draw(color);
             }
         }
@@ -87,7 +84,7 @@ public class Room
     public void makeInvisible(){
         isVisible = false;
         if(!isVisible){
-            for(Wall i: lines){
+            for(Wall i: lineas){
                 i.erase();
             }
         }
@@ -119,7 +116,8 @@ public class Room
     
     /**
      * let me create a polygon with the structure of the room
-     * @param walls the list of the points of the polygon
+     * @param walls the list of the points of the polygon.
+     * @return The new polygon.
      */
     private Polygon createPolygon(int[][] walls){
         int[] cordx = new int[walls.length];
@@ -135,15 +133,18 @@ public class Room
      * Let me create a guard on the room
      */
     public void arrivedGuard() throws GalleryException{
-        if(guardia == null){
-            guardia = new Guard(color);
-            guardia.makeInvisible();
-            guardia.makeVisible();
-            int[] posiciones = toSouth();
-            //{{0,0},{20,0},{20,30},{60,30},{60,0},{80,0},{80,50},{0,50}}
-            moveGuard(posiciones[1],posiciones[0]+5);
-        }else{
-            throw new GalleryException(GalleryException.RoomHasGuard);
+        try{
+            if(guardia == null){
+                guardia = new Guard(color);
+                int[] posiciones = toSouth();
+                //{{0,0},{20,0},{20,30},{60,30},{60,0},{80,0},{80,50},{0,50}}
+                moveGuard(posiciones[1],posiciones[0],false);
+                makeVisible();
+            }else{
+                throw new GalleryException(GalleryException.RoomHasGuard);
+            }
+        }catch(GalleryException e){
+            throw new GalleryException(GalleryException.OutOfTheRoom);
         }
     }
     
@@ -152,11 +153,15 @@ public class Room
      * @param x The x position.
      * @param y The y position.
      */
-    public void moveGuard(int x,int y) throws GalleryException{
+    public void moveGuard(int x,int y,boolean isThere) throws GalleryException{
         if(poligono.contains(x,y)){
-            guardia.moveGuard(x+15,length-y-15);
-            makeVisible();
-        }else{
+            if(isThere){
+                guardia.moveGuard(x,length-y);
+            }else{
+                guardia.moveGuard(x,length-y-5);
+            }
+        }
+        else{
             throw new GalleryException(GalleryException.OutOfTheRoom);
         }
     }
@@ -178,7 +183,8 @@ public class Room
     }
     
     /**
-     * Let me ubique the guard in the most southes position
+     * Let me ubique the guard in the most southes position.
+     * @return The position is most south.
      */
     private int[] toSouth(){
         int[] r = new int[2];
@@ -201,12 +207,17 @@ public class Room
     /**
      * Activate or deactivate the alarm 
      */
-    public void alarm(boolean on){
-        alarma.turn(on);
+    public void alarm(boolean on) throws GalleryException{
+        try{
+            alarma.turn(on);
+        }catch(GalleryException e){
+            throw new GalleryException(GalleryException.AlarmNotChange);
+        }
     }
     
     /**
      * Let me know if the alarm is turn of
+     * @return if the alarm is active or not.
      */
     public boolean alarmTurnOf(){
         return alarma.state();
@@ -215,6 +226,7 @@ public class Room
     /**
      * Return the guard's Positions
      * @throw GalleryException.
+     * @return The guard's postions.
      */
     public int[] guardLocation()throws GalleryException{
         int[] location;
@@ -228,20 +240,29 @@ public class Room
     
     /**
      * Return the sculpture's Positions
+     * @throw GalleryException
+     * @return The sculpture's postions.
      */
-    public int[] sculptureLocation(){
-        return escultura.location();
+    public int[] sculptureLocation() throws GalleryException{
+        int[] location;
+        if(escultura != null){
+            location = escultura.location();
+        }else{
+            throw new GalleryException(GalleryException.RoomHasNotSculpture);
+        }
+        return location;
     }
     
     /**
      * Let me kwon if the new room intersect.
      * @param polygon the position of the vertices of the polygon.
      * @throws GalleryException.
+     * @return if the room cross with other.
      */
     public boolean intersect(int[][] polygon){
         Wall[] muros = buildWalls(polygon);
         boolean intersect = false;
-        for(Wall u:lines){
+        for(Wall u:lineas){
             for(Wall i:muros){
                 if(u.getLine().intersectsLine(i.getLine())){
                     intersect = true;
@@ -256,24 +277,22 @@ public class Room
      * Check if the room have an apropiate form.
      * @param polygon the position of the vertices of the polygon.
      * @throws GalleryException
+     * @return if I could create the room or not.
      */
-    public void couldCreateRoom(int[][] polygon) throws GalleryException{
-        boolean intersect = false;
+    public boolean couldCreateRoom(int[][] polygon) throws GalleryException{
+        boolean intersect = true;
         int contador = 0;
-        for(Wall u:lines){
-            for(Wall i:lines){
+        for(Wall u:lineas){
+            for(Wall i:lineas){
                 if(u.getLine().intersectsLine(i.getLine())){
                     if(contador > 1){
-                        intersect = true;
-                        break;
+                        intersect = false;
                     }
                     contador++;
                 }
             }
         }
-        if(!intersect){
-            throw new GalleryException(GalleryException.CouldNotCreateRoom);
-        }
+        return intersect;
     }
     
     /**
@@ -294,6 +313,7 @@ public class Room
     
     /**
      * Let me know if the guard could see the sculpture.
+     * @return if the guard could see the sculpture.
      */
     private boolean guardSeeTheSculpture(){
         int[] posGuardia = guardia.location();
@@ -302,7 +322,8 @@ public class Room
     }
     
     /**
-     * Check if it has sculpture. 
+     * Check if it has sculpture.
+     * @return If the room has sculpture or not.
      */
     public boolean hasSculpture(){
         boolean hasSculpture = true;
@@ -314,6 +335,7 @@ public class Room
     
     /**
      * validate if the alarm was activated without having stolen the sculpture.
+     * @return If the alarm went on without meaning. 
      */
     public boolean falseAlarm(){
         boolean falseAlarm = false;
@@ -326,6 +348,7 @@ public class Room
     /**
      * Let me know the distance traveled for the guard to be able to see the sculpture.
      * @throw GalleryException
+     * @return The distance that guard walk to see the sculpture.
      */
     public float distanceTraveled() throws GalleryException{
         float distancia =0;
@@ -349,6 +372,7 @@ public class Room
     
     /**
      * calculate the length of the line
+     * @return the distance into two points into the room.
      */
     private float calculate(int[] punto1,int[] punto2){
         float distance =(float) Math.sqrt(((punto2[0]-punto1[0])*(punto2[0]-punto1[0]))+((punto2[1]-punto1[1])*(punto2[1]-punto1[1])));

@@ -182,5 +182,10 @@ public class Rectangle{
             canvas.erase(this);
         }
     }
+    
+    public int[] posiciones(){
+        int[] c = {xPosition,yPosition};
+        return c;
+    }
 }
 

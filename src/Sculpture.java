@@ -1,10 +1,10 @@
 
 /**
- * Write a description of class Sculpture here.
+ * Let me create and modify the sculpture object.
  *
  * @author Sebastian Zamora
  * @author Johann Amaya
- * @version 1.0
+ * @version 1.1
  */
 public class Sculpture
 {

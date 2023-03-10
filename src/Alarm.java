@@ -1,13 +1,13 @@
 
 /**
- * Write a description of class Alam here.
+ * Let me create and interactive with the alarm.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Sebastian Zamora
+ * @author Johann Amaya
+ * @version 1.3
  */
 public class Alarm
 {
-    // instance variables - replace the example below with your own
     private boolean on;
     private Circle alarma;
     /**
@@ -25,7 +25,10 @@ public class Alarm
         alarma.moveVertical(50*(cantidadRooms-1));
     }
     
-    public void turn(boolean stade){
+    /**
+     * Change the alarm state.
+     */
+    public void turn(boolean stade)throws GalleryException{
         if(stade != on){
             on = stade;
             if(stade){
@@ -33,13 +36,21 @@ public class Alarm
             }else{
                 alarma.changeColor("black");
             }
+        }else{
+            throw new GalleryException(GalleryException.AlarmNotChange);
         }
     }
     
+    /**
+     * Draw the alarm
+     */
     public void makeVisible(){
         alarma.makeVisible();
     }
     
+    /**
+     * errase the alarm
+     */
     public void makeInvisible(){
         alarma.makeInvisible();
     }

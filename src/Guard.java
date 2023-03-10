@@ -4,13 +4,13 @@
  *
  * @author Sebastian Zamora
  * @author Johann Amaya
- * @version 1.0
+ * @version 1.1
  */
 public class Guard
 {
     private Rectangle guardia;
-    private int xPos;
-    private int yPos;
+    private int xPos = 0;
+    private int yPos = 0;
     /**
      * Constructor for objects of class Guard
      */
@@ -24,12 +24,21 @@ public class Guard
     }
 
     /**
-     * 
+     * Let me move the guard arround the room
+     * @param x the x position.
+     * @param y the y position.
      */
     public void moveGuard(int x,int y)
     {
-        guardia.moveHorizontal(x);
+        makeInvisible();
+        int[] posiciones = guardia.posiciones();
+        guardia.moveVertical(-yPos);
+        guardia.moveHorizontal(-xPos);
         guardia.moveVertical(y);
+        guardia.moveHorizontal(x);
+        xPos = x;
+        yPos = y;
+        makeVisible();
     }
     
     /**
@@ -56,6 +65,7 @@ public class Guard
     
     /**
      * Return its position
+     * @return the guard position.
      */
     public int[] location(){
         int[] posiciones ={xPos,yPos};

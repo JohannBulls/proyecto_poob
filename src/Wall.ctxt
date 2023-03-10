@@ -12,5 +12,5 @@ comment3.target=void\ erase()
 comment3.text=\r\n\ Erase\ a\ line\ in\ canvas\r\n\ @\ the\ line's\ color\r\n
 comment4.params=
 comment4.target=java.awt.geom.Line2D\ getLine()
-comment4.text=\r\n\ Return\ the\ line\r\n\ @Param\ linea\ The\ other\ line\r\n
+comment4.text=\r\n\ Return\ the\ line\r\n\ @Param\ linea\ The\ other\ line\r\n\ @return\ the\ line.\r\n
 numComments=5

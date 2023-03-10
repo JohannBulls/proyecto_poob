@@ -38,7 +38,10 @@ public class Gallery
      * @Param sculpture Is the positions of the sculpture
      */
     public Gallery(int[][] polygon, int[] guard, int[] sculpture){
-        new Gallery(300,300);
+        Canvas galeria = Canvas.getCanvas("Galeria",400,300);
+        this.length = 300;
+        this.width = 300;
+        galeria.redraw1();
         confirm = true;
         problem = false;
         try{
@@ -46,7 +49,7 @@ public class Gallery
             Room sala = rooms.get("black");
             makeVisible();
             sala.arrivedGuard();
-            sala.moveGuard(guard[0],guard[1]);
+            sala.moveGuard(guard[0],guard[1],false);
             sala.displaySculpture(sculpture[0],sculpture[1]);
         }catch(Exception e){
             exepcion = e.getMessage();
@@ -60,12 +63,12 @@ public class Gallery
      * @param polygon the position of the vertices of the polygon.
      * @throws GalleryException
      */
-    public void buildRoom(String color, int[][] polygon) throws GalleryException{
+    public void buildRoom(String color, int[][] polygon) {
         confirm = true;
         try{
             if(problem || rooms.size()==0){
                 if(!rooms.containsKey(color)){
-                    intersect(polygon);
+                    //intersect(polygon);
                     if(confirm){
                         Room room = new Room(color,polygon,width);
                         rooms.put(color,room);
@@ -91,7 +94,7 @@ public class Gallery
      * @param x the x's position of the sculpture.
      * @param y the y's position of the sculpture.
      */
-    public void displaySculpture(String room,int x,int y){
+    public void displaySculpture(String room,int x,int y) throws GalleryException{
         confirm = true;
         try{
             if(rooms.containsKey(room)){
@@ -109,7 +112,7 @@ public class Gallery
      * Let me create a guard in a specific room.
      * @Param room The name of the room.
      */
-    public void arriveGuard(String room){
+    public void arriveGuard(String room) throws GalleryException{
         confirm = true;
         try{
             if(rooms.containsKey(room)){
@@ -129,10 +132,14 @@ public class Gallery
      * @Param x The coorden x.
      * @Param y The coorden y.
      */
-    public void moveGuard(String room, int x, int y){
+    public void moveGuard(String room, int x, int y) throws GalleryException{
         confirm = true;
         try{
-            rooms.get(room).moveGuard(x,y);
+            if(rooms.containsKey(room)){
+                rooms.get(room).moveGuard(x,y,true);
+            }else{
+                throw new GalleryException(GalleryException.RoomNotExist);
+            }
         }catch(GalleryException e){
             exepcion = e.getMessage();
             confirm = false;
@@ -161,8 +168,8 @@ public class Gallery
     public void steal(){
         confirm = true;
         try{
-            for(String i:rooms.keySet()){
-                rooms.get(i).steal();
+            for(String r:rooms.keySet()){
+                rooms.get(r).steal();
             }
         }catch(GalleryException e){
             exepcion = e.getMessage();
@@ -198,6 +205,7 @@ public class Gallery
         for(int i=0;i<roomsOnAlert.size();i++){
             room[i] = roomsOnAlert.get(i);
         }
+        Arrays.sort(room);
         return room;
     }
     
@@ -229,7 +237,7 @@ public class Gallery
      */
     public int[] sculptureLocation(String room) throws GalleryException{
         confirm = true;
-        int[] location;
+        int[] location = {0};
         try{
             if(rooms.containsKey(room)){
                 location = rooms.get(room).sculptureLocation();
@@ -248,7 +256,7 @@ public class Gallery
      * @param room The room's sculpture.
      */
     public float distanceTraveled(String room){
-        float distance;
+        float distance = 0;
         confirm = true;
         try{
             if(rooms.containsKey(room)){
@@ -267,10 +275,17 @@ public class Gallery
      * Let me know if the room has an sculpture
      * @param room The name of the room
      */
-    public boolean sculpturePresent(String room){
+    public boolean sculpturePresent(String room) throws GalleryException{
         boolean hasSculpture = true;
-        for(String i: rooms.keySet()){    
-            hasSculpture = rooms.get(i).hasSculpture();
+        try{
+            if(rooms.containsKey(room)){    
+                hasSculpture = rooms.get(room).hasSculpture();
+            }else{
+                throw new GalleryException(GalleryException.RoomNotExist);
+            }
+        }catch(GalleryException e){
+            exepcion = e.getMessage();
+            confirm = false;
         }
         return hasSculpture;
     }

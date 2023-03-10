@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Sculpture
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Sculpture\ here.\r\n\r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.0\r\n
+comment0.text=\r\n\ Let\ me\ create\ and\ modify\ the\ sculpture\ object.\r\n\r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.1\r\n
 comment1.params=color\ x\ y\ length
 comment1.target=Sculpture(java.lang.String,\ int,\ int,\ int)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Sculpture\r\n
