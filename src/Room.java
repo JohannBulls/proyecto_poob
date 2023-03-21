@@ -1,15 +1,22 @@
-
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Polygon;
 import java.lang.Math;
 
 /**
- * Let me create an interate a room.
+ * Represents a room in a 2D space.
+ * 
+ * A room is defined by a rectangular shape and contains a collection of walls
+ * that define its boundaries.
+ * 
+ * The room also contains a start and end point that define the locations where
+ * an object can start and end in the room.
+ * 
+ * The room can be drawn on a canvas.
  *
  * @author Sebastian Zamora
  * @author Johann Amaya
- * @version 1.2
+ * @version 1.4
  */
 public class Room {
     private int[][] walls;
@@ -18,13 +25,13 @@ public class Room {
     private String color;
     private Guard guardia;
     private int length;
-    private int width;
+    //private int width;
     private Polygon poligono;
     private Sculpture escultura;
     private Alarm alarma;
     private Rectangle repSala;
     private List<int[]> posiciones = new ArrayList<>();
-    private Wall[] repMovimiento;
+    //private Wall[] repMovimiento;
 
     /**
      * Constructor for objects of class Room

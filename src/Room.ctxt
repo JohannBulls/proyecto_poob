@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Room
-comment0.text=\r\n\ Let\ me\ create\ an\ interate\ a\ room.\r\n\r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.2\r\n
+comment0.text=\r\n\ Represents\ a\ room\ in\ a\ 2D\ space.\r\n\ \r\n\ A\ room\ is\ defined\ by\ a\ rectangular\ shape\ and\ contains\ a\ collection\ of\ walls\r\n\ that\ define\ its\ boundaries.\r\n\ \r\n\ The\ room\ also\ contains\ a\ start\ and\ end\ point\ that\ define\ the\ locations\ where\r\n\ an\ object\ can\ start\ and\ end\ in\ the\ room.\r\n\ \r\n\ The\ room\ can\ be\ drawn\ on\ a\ canvas.\r\n\r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.4\r\n
 comment1.params=color\ polygon\ length
 comment1.target=Room(java.lang.String,\ int[][],\ int)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Room\r\n\ \r\n\ @throw\ GalleryException\r\n
@@ -21,7 +21,7 @@ comment14.target=int[]\ sculptureLocation()
 comment14.text=\r\n\ Return\ the\ sculpture's\ Positions\r\n\ \r\n\ @throw\ GalleryException\r\n\ @return\ The\ sculpture's\ postions.\r\n
 comment15.params=prueba
 comment15.target=boolean\ intersect(int[][])
-comment15.text=\r\n\ Let\ me\ kwon\ if\ the\ new\ room\ intersect.\r\n\ \r\n\ @param\ polygon\ the\ position\ of\ the\ vertices\ of\ the\ polygon.\r\n\ @throws\ GalleryException.\r\n\ @return\ if\ the\ room\ cross\ with\ other.\r\n
+comment15.text=\r\n\ Let\ me\ kwon\ if\ the\ new\ room\ intersect.\r\n\ \r\n\ @param\ polygon\ the\ position\ of\ the\ vertices\ of\ the\ polygon.\r\n\ @return\ if\ the\ room\ cross\ with\ other.\r\n
 comment16.params=polygon
 comment16.target=boolean\ couldCreateRoom(int[][])
 comment16.text=\r\n\ Check\ if\ the\ room\ have\ an\ apropiate\ form.\r\n\ \r\n\ @param\ polygon\ the\ position\ of\ the\ vertices\ of\ the\ polygon.\r\n\ @throws\ GalleryException\r\n\ @return\ if\ I\ could\ create\ the\ room\ or\ not.\r\n

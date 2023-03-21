@@ -1,4 +1,3 @@
-
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -12,12 +11,12 @@ import java.util.List;
  * @version 1.3
  */
 public class Gallery {
-    private HashMap<String, Room> rooms = new HashMap();
+    public static HashMap<String, Room> rooms = new HashMap();
     private int length;
     private int width;
-    private String exepcion;
-    private boolean confirm;
-    private boolean problem = true;
+    public static String exepcion;
+    public static boolean confirm;
+    public static boolean problem = true;
 
     /**
      * Constructor for objects of class Galery.
