@@ -1,22 +1,15 @@
+
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Polygon;
 import java.lang.Math;
 
 /**
- * Represents a room in a 2D space.
- * 
- * A room is defined by a rectangular shape and contains a collection of walls
- * that define its boundaries.
- * 
- * The room also contains a start and end point that define the locations where
- * an object can start and end in the room.
- * 
- * The room can be drawn on a canvas.
+ * Let me create an interate a room.
  *
  * @author Sebastian Zamora
  * @author Johann Amaya
- * @version 1.4
+ * @version 1.2
  */
 public class Room {
     private int[][] walls;
@@ -25,13 +18,13 @@ public class Room {
     private String color;
     private Guard guardia;
     private int length;
-    //private int width;
+    private int width;
     private Polygon poligono;
     private Sculpture escultura;
     private Alarm alarma;
     private Rectangle repSala;
     private List<int[]> posiciones = new ArrayList<>();
-    //private Wall[] repMovimiento;
+    private Wall[] repMovimiento;
 
     /**
      * Constructor for objects of class Room
@@ -174,9 +167,10 @@ public class Room {
                 if (isThere) {
                     guardia.moveGuard(x, length - y, length);
                 } else {
-                    guardia.moveGuard(x, length - y - 5, length);
+                    guardia.moveGuard(x+1, length - y - 5, length);
                     int[] pos = {x,y};
                     posiciones.add(pos);
+                    
                 }
             } else {
                 throw new GalleryException(GalleryException.OutOfTheRoom);
@@ -324,8 +318,7 @@ public class Room {
      */
     public void steal() throws GalleryException {
         if (escultura != null) {
-            boolean guarded = guardSeeTheSculpture();
-            if(guarded) {
+            if(guardSeeTheSculpture()) {
                 escultura.makeInvisible();
                 escultura = null;
             }else{
@@ -341,7 +334,7 @@ public class Room {
      * Let me know if the guard could see the sculpture.
      * @return if the guard could see the sculpture.
      */
-    private boolean guardSeeTheSculpture() {
+    public boolean guardSeeTheSculpture() {
         int[] posGuardia = guardia.location();
         int[] posEscultura = escultura.location();
         Wall vista = new Wall(posGuardia[0],length-posGuardia[1], posEscultura[0],length- posEscultura[1]);
@@ -382,6 +375,7 @@ public class Room {
         if (posiciones.size() > 0) {
             for (int i = 1; i < posiciones.size(); i++) {
                 distancia += calculate(posiciones.get(i - 1), posiciones.get(i));
+                drawRoad();
             }
         }
         return distancia;
@@ -403,5 +397,36 @@ public class Room {
      */
     public int[][] getWalls(){
         return walls;
+    }
+    
+    /**
+     * Get the walls of the room
+     */
+    public Wall[] getLineas(){
+        return lineas;
+    }
+    
+    /**
+     * Verify if the point is inside of the room.
+     * @param the coordinates the point
+     * @return if the point is in the room.
+     */
+    public boolean containsPoint(int[] point){
+        return poligono.contains(point[0],point[1]);
+    }
+    
+    /**
+     * Draw the guard's road
+     */
+    private void drawRoad(){
+        repMovimiento = new Wall[posiciones.size()];
+        for (int i = 1; i < posiciones.size(); i++) {
+            Wall line = new Wall(posiciones.get(i-1)[0],length-posiciones.get(i-1)[1],posiciones.get(i)[1],length-posiciones.get(i)[1]);
+            line.draw("gray");
+            repMovimiento[i] = line;
+        }
+        Wall line = new Wall(posiciones.get(0)[0], length - posiciones.get(0)[1], posiciones.get(posiciones.size()-1)[0],length - posiciones.get(posiciones.size()-1)[1]);
+        line.draw("gray");
+        repMovimiento[0] = line;
     }
 }

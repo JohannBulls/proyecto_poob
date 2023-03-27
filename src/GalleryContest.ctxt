@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=GalleryContest
+comment0.text=\r\n\ Let\ me\ simulate\ and\ solve\ the\ problem\r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.0\r\n
+comment1.params=polygon\ guard\ sculpture
+comment1.target=float\ solve(int[][],\ int[],\ int[])
+comment1.text=\r\n\ Calculate\ the\ shortest\ distance\ that\ moves\ the\ guard\ to\ see\ the\ sculpture.\r\n
+comment2.params=
+comment2.target=void\ solution()
+comment2.text=\r\n\ Make\ the\ movements\ to\ the\ guard\ to\ see\ the\ sculpture\r\n
+comment3.params=startPoint\ endPoint
+comment3.target=int[]\ verticeNearest(int[],\ int[])
+comment3.text=\r\n\ Let\ me\ know\ the\ vertice\ nearest\ to\ move\r\n
+comment4.params=start\ finish
+comment4.target=int[]\ colocar(int[],\ int[])
+numComments=5

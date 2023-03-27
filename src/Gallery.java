@@ -1,3 +1,4 @@
+
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -11,12 +12,12 @@ import java.util.List;
  * @version 1.3
  */
 public class Gallery {
-    public static HashMap<String, Room> rooms = new HashMap();
+    private HashMap<String, Room> rooms = new HashMap();
     private int length;
     private int width;
-    public static String exepcion;
-    public static boolean confirm;
-    public static boolean problem = true;
+    private String exepcion;
+    private boolean confirm;
+    private boolean problem = true;
 
     /**
      * Constructor for objects of class Galery.
@@ -70,7 +71,7 @@ public class Gallery {
         try {
             if (problem || rooms.size() == 0) {
                 if (!rooms.containsKey(color)) {
-                    intersect(polygon);
+                    //intersect(polygon);
                     if (confirm) {
                         Room room = new Room(color, polygon, width);
                         rooms.put(color, room);
@@ -375,10 +376,18 @@ public class Gallery {
     }
 
     /**
-     * Let me know the exception that have the class
+     * Let me get a room
      */
-    public String getException() {
-        return exepcion;
+    public Room getRoom(String name) {
+        try {
+            if (!rooms.containsKey(name)) {
+                throw new GalleryException(GalleryException.RoomNotExist);
+            }
+        } catch (GalleryException e) {
+            exepcion = e.getMessage();
+            confirm = false;
+        }
+        return rooms.get(name);
     }
     
     /**
