@@ -145,7 +145,7 @@ public class Room {
                 guardia = new Guard(color);
                 int[] posiciones = toSouth();
                 // {{0,0},{20,0},{20,30},{60,30},{60,0},{80,0},{80,50},{0,50}}
-                moveGuard(posiciones[1], posiciones[0], false);
+                moveGuard(posiciones[1], posiciones[0]);
                 makeVisible();
             } else {
                 throw new GalleryException(GalleryException.RoomHasGuard);
@@ -161,17 +161,12 @@ public class Room {
      * @param x The x position.
      * @param y The y position.
      */
-    public void moveGuard(int x, int y, boolean isThere) throws GalleryException {
+    public void moveGuard(int x, int y) throws GalleryException {
         if (guardia != null) {
             if (poligono.contains(x, y)) {
-                if (isThere) {
-                    guardia.moveGuard(x, length - y, length);
-                } else {
                     guardia.moveGuard(x+1, length - y - 5, length);
                     int[] pos = {x,y};
                     posiciones.add(pos);
-                    
-                }
             } else {
                 throw new GalleryException(GalleryException.OutOfTheRoom);
             }
@@ -398,13 +393,7 @@ public class Room {
     public int[][] getWalls(){
         return walls;
     }
-    
-    /**
-     * Get the walls of the room
-     */
-    public Wall[] getLineas(){
-        return lineas;
-    }
+
     
     /**
      * Verify if the point is inside of the room.

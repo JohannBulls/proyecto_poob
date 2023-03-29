@@ -1,8 +1,9 @@
-
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Let me create a galery
@@ -22,8 +23,8 @@ public class Gallery {
     /**
      * Constructor for objects of class Galery.
      * 
-     * @Param length The length of the galery.
-     * @Param width The width of the galery.
+     * @param length The length of the galery.
+     * @param width The width of the galery.
      */
     public Gallery(int length, int width) {
         Canvas galeria = Canvas.getCanvas("Galeria", length + 100, width);
@@ -35,9 +36,9 @@ public class Gallery {
     /**
      * Let me create a gallery whit the indiations of the problem
      * 
-     * @Param polygon Is a matrix with all vertices of the room
-     * @Param guard Is the positions of the guard.
-     * @Param sculpture Is the positions of the sculpture
+     * @param polygon Is a matrix with all vertices of the room
+     * @param guard Is the positions of the guard.
+     * @param sculpture Is the positions of the sculpture
      */
     public Gallery(int[][] polygon, int[] guard, int[] sculpture) {
         Canvas galeria = Canvas.getCanvas("Galeria", 400, 300);
@@ -51,7 +52,7 @@ public class Gallery {
             Room sala = rooms.get("black");
             makeVisible();
             sala.arrivedGuard();
-            sala.moveGuard(guard[0], guard[1], false);
+            sala.moveGuard(guard[0], guard[1]);
             sala.displaySculpture(sculpture[0], sculpture[1]);
         } catch (Exception e) {
             exepcion = e.getMessage();
@@ -115,7 +116,7 @@ public class Gallery {
     /**
      * Let me create a guard in a specific room.
      * 
-     * @Param room The name of the room.
+     * @param room The name of the room.
      */
     public void arriveGuard(String room) {
         confirm = true;
@@ -134,15 +135,15 @@ public class Gallery {
     /**
      * Let me move a guard inside of the room.
      * 
-     * @Param room The name of the room.
-     * @Param x The coorden x.
-     * @Param y The coorden y.
+     * @param room The name of the room.
+     * @param x The coorden x.
+     * @param y The coorden y.
      */
     public void moveGuard(String room, int x, int y) {
         confirm = true;
         try {
             if (rooms.containsKey(room)) {
-                rooms.get(room).moveGuard(x, y, true);
+                rooms.get(room).moveGuard(x, y);
             } else {
                 throw new GalleryException(GalleryException.RoomNotExist);
             }
@@ -155,8 +156,8 @@ public class Gallery {
     /**
      * Let's create the room's alarm.
      * 
-     * @Param room The name of the room.
-     * @Param on The alarm state.
+     * @param room The name of the room.
+     * @param on The alarm state.
      */
     public void alarm(String room, boolean on) {
         confirm = true;
@@ -223,7 +224,7 @@ public class Gallery {
     /**
      * Let me know the guard's position of the room.
      * 
-     * @Param room the room's color.
+     * @param room the room's color.
      */
     public int[] guardLocation(String room) {
         confirm = true;
@@ -244,7 +245,7 @@ public class Gallery {
     /**
      * Let me know the sculpture's position of the room.
      * 
-     * @Param room the room's color.
+     * @param room the room's color.
      */
     public int[] sculptureLocation(String room) {
         confirm = true;
@@ -267,6 +268,7 @@ public class Gallery {
      * sculpture.
      * 
      * @param room The room's sculpture.
+     * @return the distance that 
      */
     public float distanceTraveled(String room) {
         float distance = 0;
@@ -274,6 +276,11 @@ public class Gallery {
         try {
             if (rooms.containsKey(room)) {
                 distance = rooms.get(room).distanceTraveled();
+                BigDecimal numero = BigDecimal.valueOf(distance);
+                numero =numero.setScale(6,RoundingMode.HALF_UP);
+                
+                distance = numero.floatValue();
+                System.out.println(distance);
             } else {
                 throw new GalleryException(GalleryException.RoomNotExist);
             }

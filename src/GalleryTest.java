@@ -1,4 +1,3 @@
- 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,7 +120,7 @@ public class GalleryTest
     public void testMoveGuard() throws GalleryException {
         Gallery g = new Gallery(1100, 680);
         int[][] vertices = {{100, 100}, {200, 100}, {200, 200}, {100, 200}};
-        int[] posiciones = {100,150};
+        int[] posiciones = {101,155};
         g.buildRoom("red", vertices);
         g.arriveGuard("red");
         g.moveGuard("red",100, 150);
@@ -180,17 +179,50 @@ public class GalleryTest
     public void shouldNotStealTheSculptureIfTheGuardSeeIt(){
        Gallery g = new Gallery(1100, 680);
        int[][] vertices = {{100, 100}, {200, 100}, {200, 200}, {100, 200}};
-       int[][] vertices2 = {{210, 210}, {210, 250}, {250, 250}, {210, 210}};
-       int[][] vertices3 = {{260, 260}, {300, 300}, {260, 300}, {300, 260}};
+       int[][] vertices2 = {{210, 210}, {210, 300}, {300, 300}, {300, 210}};
        g.buildRoom("red", vertices);
        g.buildRoom("blue", vertices2);
-       g.buildRoom("yellow", vertices3);
-       g.displaySculpture("blue",210,240);
-       g.displaySculpture("red",100,140);
+       g.displaySculpture("blue",220,240);
+       g.displaySculpture("red",120,140);
        g.arriveGuard("blue");
+       g.makeVisible();
        g.arriveGuard("red");
        g.steal();
        assertEquals(g.sculpturePresent("blue"),true);
+       assertEquals(g.sculpturePresent("red"),true);
     }
-    
+
+
+    @Test
+    public void StealTheSculptureIfTheGuardSeeIt(){
+        Gallery g = new Gallery(1100, 680);
+        int[][] vertices = {{100, 100}, {200, 100}, {200, 300}, {150, 300},{150,200},{100,200}};
+        int[][] vertices2 = {{0,0},{20,0},{20,30},{60,30},{60,0},{80,0},{80,50},{0,50}};
+        g.buildRoom("red", vertices);
+        g.buildRoom("blue", vertices2);
+        g.displaySculpture("blue",220,240);
+        g.displaySculpture("red",70,10);
+        g.arriveGuard("blue");
+        g.arriveGuard("red");
+        g.steal();
+        assertEquals(g.sculpturePresent("blue"),false);
+        assertEquals(g.sculpturePresent("red"),false);
+    }
+    @Test
+    public void shouldCalculateDistanceMove(){
+        Gallery g = new Gallery(300,300);
+        int[][] vertices = {{0,0},{20,0},{20,30},{60,30},{60,0},{80,0},{80,50},{0,50}};
+        int[][] vertices2 = {{100, 100}, {200, 100}, {200, 200}, {100, 200}};
+        g.buildRoom("blue",vertices);
+        g.buildRoom("red",vertices2);
+        g.arriveGuard("blue");
+        g.arriveGuard("red");
+        g.moveGuard("blue",10,10);
+        g.moveGuard("blue",40,40);
+        g.moveGuard("red",110,150);
+        g.moveGuard("red",130,140);
+        assertEquals(g.distanceTraveled("blue"),56.568542);
+        assertEquals(g.distanceTraveled("red"),73.350876);
+    }
+
 }

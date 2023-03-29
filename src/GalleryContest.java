@@ -1,4 +1,6 @@
 import java.lang.Math;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Let me simulate and solve the problem
  * @author Sebastian Zamora
@@ -9,16 +11,32 @@ public class GalleryContest
 {
     private Gallery galeria;
     Wall[] lineas;
+    private List<int[]> posiciones = new ArrayList<>();
+    
     /**
      * Calculate the shortest distance that moves the guard to see the sculpture.
      */
     public float solve(int[][] polygon, int[] guard, int[] sculpture){
         float distance = 0;
         galeria = new Gallery(polygon,guard,sculpture);
-        lineas = galeria.getRoom("black").getLineas();
-        if(galeria.getRoom("black").guardSeeTheSculpture()){
+        galeria.makeInvisible();
+        buildlineas(polygon);
+        if(guardSeeTheSculpture(guard,sculpture)){
             solution();
             distance =galeria.distanceTraveled("black");
+        }
+        galeria.makeInvisible();
+        return distance;
+    }
+    
+    /**
+     * Simulate the case that the user give
+     */
+    public float simulate(int[][] polygon, int[] guard, int[] sculpture){
+        float distance = solve(polygon,guard,sculpture);
+        galeria = new Gallery(polygon,guard,sculpture);
+        for(int[] i:posiciones){
+            galeria.moveGuard("black",i[0],i[1]);
         }
         return distance;
     }
@@ -32,10 +50,10 @@ public class GalleryContest
         int[] sculpttureLineVision = verticeNearest(sculptureLocation,guardLocation);
         Wall guardVision = new Wall(sculpttureLineVision[0],sculpttureLineVision[1],guardLocation[0],guardLocation[1]);
         Wall sculptureVision = new Wall(sculpttureLineVision[0],sculpttureLineVision[1],sculptureLocation[0],sculptureLocation[1]);
-        guardLocation = galeria.guardLocation("black");
         while(guardVision.intersect(sculptureVision)){
             sculpttureLineVision = verticeNearest(guardLocation,sculptureLocation);
-            galeria.moveGuard("black",sculpttureLineVision[0],sculpttureLineVision[1]);
+            int[] pos = {sculpttureLineVision[0],sculpttureLineVision[1]};
+            posiciones.add(pos);
             guardVision = new Wall(sculpttureLineVision[0],sculpttureLineVision[1],300-guardLocation[0],300-guardLocation[1]);
         }
     }
@@ -54,7 +72,6 @@ public class GalleryContest
                 distance = distanceToVertice;
             }
         }
-        System.out.println(nearestPoint[0]+"-"+nearestPoint[1]);
         return nearestPoint;
     }
 
@@ -72,10 +89,74 @@ public class GalleryContest
             point[0] =finish[0] -1;
         }
         if(start[1]<finish[1]){
-            point[1] =finish[1] +5;
+            point[1] =finish[1] +1;
         }else{
-            point[1] =finish[1] -5;
+            point[1] =finish[1] -1;
         }
         return point;
+    }
+    
+    /**
+     * Let me make the walls of the rooms
+     * 
+     * @param polygon the matrix with all vertices of the room
+     * @return the matirx of the walls
+     */
+    private void buildlineas(int[][] polygon) {
+        lineas = new Wall[polygon.length];
+        for (int i = 1; i < polygon.length; i++) {
+            Wall line = new Wall(polygon[i - 1][0],  300- polygon[i - 1][1], polygon[i][0], 300 - polygon[i][1]);
+            lineas[i] = line;
+        }
+        Wall line = new Wall(polygon[0][0], 300 - polygon[0][1], polygon[polygon.length - 1][0],
+                300 - polygon[polygon.length - 1][1]);
+        lineas[0] = line;
+    }
+
+    /**
+     * Let me know if the guard see the sculpture
+     * @return if the guard see the sculpture
+     */
+    private boolean guardSeeTheSculpture(int[] posGuardia,int[] posEscultura){
+        Wall vista = new Wall(posGuardia[0],300-posGuardia[1], posEscultura[0],300- posEscultura[1]);
+        return vista.intersects(lineas);
+    }
+
+    public static double[][] gaussJordan(double[][] matriz) {
+        int filas = matriz.length;
+        int columnas = matriz[0].length;
+
+        for (int i = 0; i < filas; i++) {
+            // Encontrar la fila con el valor absoluto máximo en la columna i
+            int maxFila = i;
+            for (int j = i + 1; j < filas; j++) {
+                if (Math.abs(matriz[j][i]) > Math.abs(matriz[maxFila][i])) {
+                    maxFila = j;
+                }
+            }
+
+            // Intercambiar la fila actual por la fila con el valor absoluto máximo en la columna i
+            double[] temp = matriz[i];
+            matriz[i] = matriz[maxFila];
+            matriz[maxFila] = temp;
+
+            // Hacer que el elemento diagonal sea igual a 1
+            double diagonal = matriz[i][i];
+            for (int j = i; j < columnas; j++) {
+                matriz[i][j] /= diagonal;
+            }
+
+            // Hacer que los demás elementos en la columna i sean igual a 0
+            for (int j = 0; j < filas; j++) {
+                if (j != i) {
+                    double factor = matriz[j][i];
+                    for (int k = i; k < columnas; k++) {
+                        matriz[j][k] -= factor * matriz[i][k];
+                    }
+                }
+            }
+        }
+
+        return matriz;
     }
 }
