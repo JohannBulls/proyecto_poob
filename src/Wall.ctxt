@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Wall
-comment0.text=\r\n\ Let\ me\ create\ and\ modify\ Intersections.\r\n\ \r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.0\r\n
+comment0.text=\r\n\ Let\ me\ create\ and\ modify\ Intersections.\r\n\ \r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.2\r\n
 comment1.params=X1\ Y1\ X2\ Y2
 comment1.target=Wall(double,\ double,\ double,\ double)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Line\r\n
@@ -10,4 +10,16 @@ comment2.text=\r\n\ Draw\ a\ line\ in\ canvas\r\n\ @\ the\ line's\ color\r\n
 comment3.params=
 comment3.target=void\ erase()
 comment3.text=\r\n\ Erase\ a\ line\ in\ canvas\r\n\ @\ the\ line's\ color\r\n
-numComments=4
+comment4.params=
+comment4.target=java.awt.geom.Line2D\ getLine()
+comment4.text=\r\n\ Return\ the\ line\r\n\ \r\n\ @Param\ linea\ The\ other\ line\r\n\ @return\ the\ line.\r\n
+comment5.params=
+comment5.target=double[]\ getPosiciones()
+comment5.text=\r\n\ Return\ the\ points\ of\ start\ and\ finish\ of\ the\ line.\r\n\ \r\n\ @return\ an\ int\ list\ with\ the\ points\ of\ the\ line.\r\n
+comment6.params=lines
+comment6.target=boolean\ intersect(Wall)
+comment6.text=\r\n\ Verify\ if\ it\ intersect\ with\ other\ wall\r\n\ \r\n\ @Param\ wall\ The\ other\ wall\r\n
+comment7.params=lines
+comment7.target=boolean\ intersects(Wall[])
+comment7.text=\r\n\ \r\n
+numComments=8

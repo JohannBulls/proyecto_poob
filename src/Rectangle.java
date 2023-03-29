@@ -1,3 +1,4 @@
+ 
 import java.awt.*;
 
 /**
@@ -181,6 +182,11 @@ public class Rectangle{
             Canvas canvas = Canvas.getCanvas();
             canvas.erase(this);
         }
+    }
+    
+    public int[] posiciones(){
+        int[] c = {xPosition,yPosition};
+        return c;
     }
 }
 

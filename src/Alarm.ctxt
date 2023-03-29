@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Alarm
+comment0.text=\r\n\ Let\ me\ create\ and\ interactive\ with\ the\ alarm.\r\n\r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.3\r\n
+comment1.params=cantidadRooms\ length
+comment1.target=Alarm(int,\ int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Alam\r\n
+comment2.params=stade
+comment2.target=void\ turn(boolean)
+comment2.text=\r\n\ Change\ the\ alarm\ state.\r\n
+comment3.params=
+comment3.target=void\ makeVisible()
+comment3.text=\r\n\ Draw\ the\ alarm\r\n
+comment4.params=
+comment4.target=void\ makeInvisible()
+comment4.text=\r\n\ errase\ the\ alarm\r\n
+comment5.params=
+comment5.target=boolean\ state()
+comment5.text=\r\n\ Returns\ the\ alarm\ status\r\n
+numComments=6
