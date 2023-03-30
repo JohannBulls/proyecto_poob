@@ -18,11 +18,14 @@ public class GalleryContest
      */
     public float solve(int[][] polygon, int[] guard, int[] sculpture){
         float distance = 0;
+        galeria = new Gallery(polygon,guard,sculpture);
+        galeria.makeInvisible();
         buildlineas(polygon);
         if(guardSeeTheSculpture(guard,sculpture)){
-            solution(guard,sculpture,polygon);
+            solution();
+            distance =galeria.distanceTraveled("black");
         }
-        distance =galeria.distanceTraveled("black");
+        galeria.makeInvisible();
         return distance;
     }
     
@@ -41,25 +44,25 @@ public class GalleryContest
     /**
      * Make the movements to the guard to see the sculpture
      */
-    private void solution(int[] guardLocation,int[]sculptureLocation,int[][] vertices){
-        int[] sculpttureLineVision = verticeNearest(sculptureLocation,guardLocation,vertices);
+    private void solution(){
+        int[] sculptureLocation = galeria.sculptureLocation("black");
+        int[] guardLocation = galeria.guardLocation("black");
+        int[] sculpttureLineVision = verticeNearest(sculptureLocation,guardLocation);
         Wall guardVision = new Wall(sculpttureLineVision[0],sculpttureLineVision[1],guardLocation[0],guardLocation[1]);
         Wall sculptureVision = new Wall(sculpttureLineVision[0],sculpttureLineVision[1],sculptureLocation[0],sculptureLocation[1]);
         while(guardVision.intersect(sculptureVision)){
-            sculpttureLineVision = verticeNearest(guardLocation,sculptureLocation,vertices);
+            sculpttureLineVision = verticeNearest(guardLocation,sculptureLocation);
             int[] pos = {sculpttureLineVision[0],sculpttureLineVision[1]};
             posiciones.add(pos);
             guardVision = new Wall(sculpttureLineVision[0],sculpttureLineVision[1],300-guardLocation[0],300-guardLocation[1]);
         }
-        float[] inter=interPosition(sculptureLocation,sculpttureLineVision,guardLocation);
-        int[] result ={(int)inter[0],(int)inter[1]};
-        posiciones.add(result);
     }
     
     /**
      * Let me know the vertice nearest to move
      */
-    private int[] verticeNearest(int[] startPoint,int[] endPoint,int[][] vertices){
+    private int[] verticeNearest(int[] startPoint,int[] endPoint){
+        int[][] vertices = galeria.getVertices("black");
         int[] nearestPoint = {0,0};
         double distance = Math.hypot(endPoint[0]-startPoint[0],endPoint[1]-startPoint[1]);
         for(int[] i: vertices){
@@ -119,22 +122,7 @@ public class GalleryContest
         return vista.intersects(lineas);
     }
 
-    private float[] interPosition(int[] esculIni,int[] esculFin, int[] guardIni){
-        float m1 = (esculFin[1]-esculIni[1])/(esculFin[0]-esculIni[0]);
-        float m2=(-1)/m1;
-
-        float[][]matriz={{m1,-1,(-(m1*esculIni[0])+esculIni[1])},{m2,-1,(-(m2*guardIni[0])+guardIni[1])}};
-
-        matriz=gaussJordan(matriz);
-
-        float x=matriz[0][2];
-        float y=matriz[1][2];
-        float[] interPositi={x,y};
-        return interPositi;
-
-    }
-
-    private static float[][] gaussJordan(float[][] matriz) {
+    public static double[][] gaussJordan(double[][] matriz) {
         int filas = matriz.length;
         int columnas = matriz[0].length;
 
@@ -148,12 +136,12 @@ public class GalleryContest
             }
 
             // Intercambiar la fila actual por la fila con el valor absoluto máximo en la columna i
-            float[] temp = matriz[i];
+            double[] temp = matriz[i];
             matriz[i] = matriz[maxFila];
             matriz[maxFila] = temp;
 
             // Hacer que el elemento diagonal sea igual a 1
-            float diagonal = matriz[i][i];
+            double diagonal = matriz[i][i];
             for (int j = i; j < columnas; j++) {
                 matriz[i][j] /= diagonal;
             }
@@ -161,7 +149,7 @@ public class GalleryContest
             // Hacer que los demás elementos en la columna i sean igual a 0
             for (int j = 0; j < filas; j++) {
                 if (j != i) {
-                    float factor = matriz[j][i];
+                    double factor = matriz[j][i];
                     for (int k = i; k < columnas; k++) {
                         matriz[j][k] -= factor * matriz[i][k];
                     }

@@ -1,7 +1,0 @@
-#BlueJ class context
-comment0.target=GalleryExecption
-comment0.text=\r\n\ Let\ me\ create\ a\ galery\r\n\r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.0\r\n
-comment1.params=msm
-comment1.target=GalleryExecption(java.lang.String)
-comment1.text=\r\n\ Lanza\ las\ exepciones\ creadas.\r\n\ @param\ Recibe\ un\ mensaje\ String\ msm\r\n
-numComments=2
