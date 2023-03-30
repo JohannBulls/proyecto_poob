@@ -18,11 +18,11 @@ public class Solve
         solution();
         return galeria.distanceTraveled("black");
     }
-    
+
     /**
      * Make the movements to the guard to see the sculpture
      */
     public void solution(){
-        
+
     }
 }

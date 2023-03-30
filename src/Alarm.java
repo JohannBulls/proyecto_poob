@@ -1,4 +1,3 @@
-
 /**
  * Let me create and interactive with the alarm.
  *
