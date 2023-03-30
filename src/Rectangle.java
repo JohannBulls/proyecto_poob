@@ -160,7 +160,7 @@ public class Rectangle{
         draw();
     }
 
-    /*
+    /**
      * Draw the rectangle with current specifications on screen.
      */
 
@@ -174,7 +174,7 @@ public class Rectangle{
         }
     }
 
-    /*
+    /**
      * Erase the rectangle on screen.
      */
     private void erase(){
@@ -184,6 +184,13 @@ public class Rectangle{
         }
     }
     
+    /**
+
+Returns the current position of the guard in the gallery as an array of two integers.
+The first element of the array represents the x-coordinate, and the second element represents the y-coordinate.
+@return an array of two integers representing the x and y position of the guard.
+*/
+
     public int[] posiciones(){
         int[] c = {xPosition,yPosition};
         return c;

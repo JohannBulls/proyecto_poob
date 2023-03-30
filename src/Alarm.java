@@ -24,7 +24,12 @@ public class Alarm {
     }
 
     /**
-     * Change the alarm state.
+     * Changes the state of the alarm system.
+     * 
+     * @param state The desired state of the alarm system (true for on, false for
+     *              off).
+     * @throws GalleryException If the new state is the same as the current state of
+     *                          the alarm system.
      */
     public void turn(boolean stade) throws GalleryException {
         if (stade != on) {
@@ -47,14 +52,16 @@ public class Alarm {
     }
 
     /**
-     * errase the alarm
+     * Errase the alarm
      */
     public void makeInvisible() {
         alarma.makeInvisible();
     }
 
     /**
-     * Returns the alarm status
+     * Returns the current state of the alarm.
+     *
+     * @return true if the alarm is on, false if it is off.
      */
     public boolean state() {
         return on;

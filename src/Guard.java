@@ -24,10 +24,13 @@ public class Guard {
     }
 
     /**
-     * Let me move the guard arround the room
      * 
-     * @param x the x position.
-     * @param y the y position.
+     * Moves the guard to the specified coordinates (x,y) within the given length of
+     * the room.
+     * 
+     * @param x      The x-coordinate to move the guard to.
+     * @param y      The y-coordinate to move the guard to.
+     * @param length The length of the room.
      */
     public void moveGuard(int x, int y, int length) {
         makeInvisible();

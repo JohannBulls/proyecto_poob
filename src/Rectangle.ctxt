@@ -24,6 +24,7 @@ comment15.target=void\ erase()
 comment15.text=\r\n\ Erase\ the\ rectangle\ on\ screen.\r\n
 comment16.params=
 comment16.target=int[]\ posiciones()
+comment16.text=\r\n\r\nReturns\ the\ current\ position\ of\ the\ guard\ in\ the\ gallery\ as\ an\ array\ of\ two\ integers.\r\nThe\ first\ element\ of\ the\ array\ represents\ the\ x-coordinate,\ and\ the\ second\ element\ represents\ the\ y-coordinate.\r\n@return\ an\ array\ of\ two\ integers\ representing\ the\ x\ and\ y\ position\ of\ the\ guard.\r\n
 comment2.params=
 comment2.target=void\ makeVisible()
 comment2.text=\r\n\ Make\ this\ rectangle\ visible.\ If\ it\ was\ already\ visible,\ do\ nothing.\r\n
