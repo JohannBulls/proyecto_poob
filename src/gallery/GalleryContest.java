@@ -15,7 +15,10 @@ import java.text.DecimalFormat;
  */
 public class GalleryContest
 {
-    private Gallery galeria;
+    // Caso de Prueba 1
+    // {{100,100},{120,100},{120,120},{200,120},{200,180},{100,180}},{110,100},{180,150}
+    // Caso de Prueba 2
+    // {{0,0},{20,0},{20,30},{60,30},{60,0},{80,0},{80,50},{0,50}},{10,10},{70,10}
     private Wall[] lineas;
     private List<int[]> posiciones;
     private Polygon poligono;
@@ -28,8 +31,8 @@ public class GalleryContest
         buildlineas(polygon);
         if(guardSeeTheSculpture(guard,sculpture)){
             solution(guard,sculpture,polygon);
+            distance =distanceTraveled();
         }
-        distance =distanceTraveled();
         return distance;
     }
 
@@ -39,10 +42,13 @@ public class GalleryContest
     public float simulate(int[][] polygon, int[] guard, int[] sculpture){
         createPolygon(polygon);
         float distance = solve(polygon,guard,sculpture);
-        galeria = new Gallery(polygon,guard,sculpture);
-        for(int[] i:posiciones){
-            galeria.moveGuard("black",i[0],i[1]);
+        Gallery galeria = new Gallery(polygon,guard,sculpture);
+        if(distance > 0){
+            for(int[] i:posiciones){
+                galeria.moveGuard("black",i[0],i[1]);
+            }
         }
+        drawString();
         return distance;
     }
 
@@ -216,5 +222,15 @@ public class GalleryContest
             cordy[i] = lineas[i][1];
         }
         poligono = new Polygon(cordx, cordy, lineas.length);
+    }
+
+    /**
+     * Let me create the lines that represented the route.
+     */
+    private void drawString(){
+        for(int i = 0;i<posiciones.size()-1;i++){
+            Wall recorido = new Wall(posiciones.get(i)[0],300-posiciones.get(i)[1],posiciones.get(i+1)[0],300-posiciones.get(i+1)[1]);
+            recorido.draw("cyan");
+        }
     }
 }

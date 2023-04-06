@@ -1,9 +1,13 @@
 package gallery;
+
 import shapes.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Polygon;
 import java.lang.Math;
+import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormatSymbols;
+import java.text.DecimalFormat;
 
 /**
  * Let me create an interate a room.
@@ -49,42 +53,12 @@ public abstract class Room {
     /**
      * Let me show the walls
      */
-    public void makeVisible() {
-        isVisible = true;
-        if (isVisible) {
-            for (Wall i : lineas) {
-                i.draw(color);
-            }
-        }
-        if (guardia != null) {
-            guardia.makeVisible();
-        }
-        if (escultura != null) {
-            escultura.makeVisible();
-        }
-        repSala.makeVisible();
-        alarma.makeVisible();
-    }
+    public abstract void makeVisible();
 
     /**
      * Let me erase the view of the walls
      */
-    public void makeInvisible() {
-        isVisible = false;
-        if (!isVisible) {
-            for (Wall i : lineas) {
-                i.erase();
-            }
-        }
-        if (guardia != null) {
-            guardia.makeInvisible();
-        }
-        if (escultura != null) {
-            escultura.makeInvisible();
-        }
-        repSala.makeInvisible();
-        alarma.makeInvisible();
-    }
+    public abstract void makeInvisible();
 
     /**
      * 
@@ -94,10 +68,19 @@ public abstract class Room {
      * 
      * @param x the x-coordinate of the position where to display the sculpture
      * @param y the y-coordinate of the position where to display the sculpture
-     * @throws GalleryException if there is already a sculpture in the room or the
-     *                          given position is outside the room
+     * @throws GalleryException          if there is already a sculpture in the room
+     *                                   or
+     *                                   the
+     *                                   given position is outside the room
+     * @throws NoSuchMethodException
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
-    public abstract void displaySculpture(int x, int y) throws GalleryException;
+    public abstract void displaySculpture(String type, int x, int y)
+            throws GalleryException, NoSuchMethodException, ClassNotFoundException, InstantiationException,
+            IllegalAccessException, InvocationTargetException;
 
     /**
      * let me create a polygon with the structure of the room
@@ -116,13 +99,27 @@ public abstract class Room {
     }
 
     /**
-     * 
      * Creates a polygon using the coordinates of the walls of the room.
      * 
      * @param walls an array of 2D coordinates representing the walls of the room.
      * @return a polygon object representing the shape of the room.
      */
-    public abstract void arrivedGuard() throws GalleryException;
+    public void arrivedGuard(String type) throws java.lang.reflect.InvocationTargetException, IllegalAccessException,
+            InstantiationException, ClassNotFoundException, NoSuchMethodException, GalleryException {
+        try {
+            if (guardia == null) {
+                guardia = (Guard) Class.forName("gallery." + type)
+                        .getConstructor(String.class).newInstance(color);
+                int[] posiciones = toSouth();
+                moveGuard(posiciones[1], posiciones[0]);
+                makeVisible();
+            } else {
+                throw new GalleryException(GalleryException.ROOM_HAS_GUARD);
+            }
+        } catch (GalleryException e) {
+            throw new GalleryException(GalleryException.OUT_OF_THE_ROOM);
+        }
+    }
 
     /**
      * Moves the guard to the specified position within the room.
@@ -136,13 +133,16 @@ public abstract class Room {
         if (guardia != null) {
             if (poligono.contains(x, y)) {
                 guardia.moveGuard(x + 1, length - y - 5, length);
-                int[] pos = { x, y };
-                posiciones.add(pos);
+                if (guardSeeTheSculpture()) {
+                    if (escultura.getType().equals("Shy")) {
+                        escultura.makeInvisible();
+                    }
+                }
             } else {
-                throw new GalleryException(GalleryException.OutOfTheRoom);
+                throw new GalleryException(GalleryException.OUT_OF_THE_ROOM);
             }
         } else {
-            throw new GalleryException(GalleryException.RoomHasNotGuard);
+            throw new GalleryException(GalleryException.ROOM_HAS_GUARD);
         }
     }
 
@@ -196,7 +196,7 @@ public abstract class Room {
      *
      * @return boolean value representing the state of the alarm (on/off).
      */
-    public abstract boolean alarmTurnOf() ;
+    public abstract boolean alarmTurnOf() throws GalleryException;
 
     /**
      * Returns a boolean value indicating whether the alarm is turned off.
@@ -208,7 +208,7 @@ public abstract class Room {
         if (guardia != null) {
             location = guardia.location();
         } else {
-            throw new GalleryException(GalleryException.RoomHasNotGuard);
+            throw new GalleryException(GalleryException.ROOM_HAS_NOT_GUARD);
         }
         return location;
     }
@@ -225,7 +225,7 @@ public abstract class Room {
         if (escultura != null) {
             location = escultura.location();
         } else {
-            throw new GalleryException(GalleryException.RoomHasNotSculpture);
+            throw new GalleryException(GalleryException.ROOM_HAS_NOT_SCULPTURE);
         }
         return location;
     }
@@ -307,7 +307,7 @@ public abstract class Room {
      * @return boolean value `true` if there is a sculpture in the gallery, `false`
      *         if there is no sculpture.
      */
-    public abstract boolean hasSculpture();
+    public abstract boolean hasSculpture() throws GalleryException;
 
     /**
      * Returns true if there has been a false alarm, false otherwise.
@@ -316,7 +316,7 @@ public abstract class Room {
      * 
      * @return a boolean indicating whether there has been a false alarm.
      */
-    public abstract boolean falseAlarm();
+    public abstract boolean falseAlarm() throws GalleryException;
 
     /**
      * Calculates the distance traveled by the object based on its previous
@@ -326,15 +326,16 @@ public abstract class Room {
      */
     public float distanceTraveled() {
         float distancia = 0;
-        DecimalFormatSymbols extencion =new DecimalFormatSymbols();
+        DecimalFormatSymbols extencion = new DecimalFormatSymbols();
         extencion.setDecimalSeparator('.');
         DecimalFormat formato1 = new DecimalFormat("#.000000", extencion);
         if (posiciones.size() > 0) {
             for (int i = 1; i < posiciones.size(); i++) {
-                distance += Math.hypot(posiciones.get(i+1)[0]-posiciones.get(i)[0],posiciones.get(i+1)[1]-posiciones.get(i)[1]);
+                distancia += Math.hypot(posiciones.get(i + 1)[0] - posiciones.get(i)[0],
+                        posiciones.get(i + 1)[1] - posiciones.get(i)[1]);
             }
         }
-        formato1.format(distance);
+        formato1.format(distancia);
         return distancia;
     }
 }

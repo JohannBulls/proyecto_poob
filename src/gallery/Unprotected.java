@@ -3,23 +3,23 @@ package gallery;
 import shapes.Rectangle;
 
 /**
- * Let me create a Normal room.
+ * Creates a new Room that it doesn't has alarm.
  * 
  * @author Sebastian Zamora.
  * @author Johann Amaya.
  * @version 1.0
  */
-public class NormalRoom extends Room {
+public class Unprotected extends Room {
 
     /**
-     * Create a normal room.
+     * Create a new Unprotected room.
      * 
      * @param color   the room´s color.
      * @param polygon the room's vertices.
      * @param length  the room´s length.
      * @throws GalleryException
      */
-    public NormalRoom(String color, int[][] polygon, int length) throws GalleryException {
+    public Unprotected(String color, int[][] polygon, int length) throws GalleryException {
         walls = polygon;
         this.color = color;
         this.length = length;
@@ -31,10 +31,8 @@ public class NormalRoom extends Room {
         }
     }
 
-    public void displaySculpture(String type, int x, int y)
-            throws java.lang.reflect.InvocationTargetException, IllegalAccessException, InstantiationException,
-            ClassNotFoundException, NoSuchMethodException,
-            GalleryException {
+    @Override
+    public void displaySculpture(String type, int x, int y) throws java.lang.reflect.InvocationTargetException,IllegalAccessException,InstantiationException,ClassNotFoundException,NoSuchMethodException, GalleryException {
         if (escultura == null) {
             if (poligono.contains(x, y)) {
                 escultura = (Sculpture) Class.forName("gallery." + type)
@@ -49,38 +47,24 @@ public class NormalRoom extends Room {
     }
 
     @Override
-    public void alarm(int cantidadRooms, int length) {
-        alarma = new Alarm(cantidadRooms, length);
-        repSala = new Rectangle();
-        repSala.changeColor(color);
-        repSala.changeSize(20, 20);
-        repSala.moveHorizontal(-70);
-        repSala.moveHorizontal(length);
-        repSala.moveVertical(-15);
-        repSala.moveVertical(50 * (cantidadRooms - 1));
-        repSala.makeVisible();
-        alarma.makeVisible();
+    public void alarm(int a, int b) {
     }
 
     @Override
     public void alarm(boolean on) throws GalleryException {
-        try {
-            alarma.turn(on);
-        } catch (GalleryException e) {
-            throw new GalleryException(GalleryException.ALARM_NOT_CHANGE);
-        }
+        throw new GalleryException(GalleryException.UNPROTECTED_ROOM);
     }
 
-    @Override
-    public boolean alarmTurnOf() {
-        return alarma.state();
+    public boolean alarmTurnOf() throws GalleryException {
+        throw new GalleryException(GalleryException.UNPROTECTED_ROOM);
     }
 
     @Override
     public void steal() throws GalleryException {
         if (escultura != null) {
             if (guardSeeTheSculpture()) {
-                escultura.steal();
+                escultura.makeInvisible();
+                escultura = null;
             } else {
                 escultura.enlarge(5);
                 escultura.makeVisible();
@@ -92,16 +76,16 @@ public class NormalRoom extends Room {
 
     @Override
     public boolean hasSculpture() {
-        return escultura.getState();
+        boolean hasSculpture = true;
+        if (escultura == null) {
+            hasSculpture = false;
+        }
+        return hasSculpture;
     }
 
     @Override
-    public boolean falseAlarm() {
-        boolean falseAlarm = false;
-        if (alarma.state() && escultura != null) {
-            falseAlarm = true;
-        }
-        return falseAlarm;
+    public boolean falseAlarm() throws GalleryException {
+        throw new GalleryException(GalleryException.UNPROTECTED_FALSE_ALARM);
     }
 
     @Override
@@ -118,8 +102,6 @@ public class NormalRoom extends Room {
         if (escultura != null) {
             escultura.makeVisible();
         }
-        repSala.makeVisible();
-        alarma.makeVisible();
     }
 
     @Override
@@ -136,7 +118,5 @@ public class NormalRoom extends Room {
         if (escultura != null) {
             escultura.makeInvisible();
         }
-        repSala.makeInvisible();
-        alarma.makeInvisible();
     }
 }

@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Lazy
+comment0.text=\r\n\ Let\ me\ create\ a\ guard\ that\ moves\ half\ the\ distance\ less\ than\ a\ regular\ guard.\r\n\ \r\n\ @author\ Sebastian\ Zamora.\r\n\ @author\ Johann\ Amaya.\r\n\ @version\ 1.0\r\n
+comment1.params=color
+comment1.target=Lazy(java.lang.String)
+comment1.text=\r\n\ Constructor\ fot\ objects\ of\ class\ Guard\ Lazy\r\n
+comment2.params=x\ y\ length
+comment2.target=void\ moveGuard(int,\ int,\ int)
+numComments=3

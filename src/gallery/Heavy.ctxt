@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Heavy
+comment0.text=\r\n\ Let\ me\ create\ a\ sculpture\ that\ it's\ not\ possible\ to\ steal\ \u00C2\u00B4cuz\ it\u00C2\u00B4s\ to\ heavy\r\n\ to\ carry\ its\r\n\ \r\n\ @author\ Sebastian\ Zamora.\r\n\ @author\ Johann\ Amaya.\r\n\ @version\ 1.0\r\n
+comment1.params=color\ x\ y\ length
+comment1.target=Heavy(java.lang.String,\ int,\ int,\ int)
+comment1.text=\r\n\ Let\ create\ a\ Heavy\ Sculpture.\r\n\ \r\n\ @param\ color\ \ The\ room\u00C2\u00B4s\ color.\r\n\ @param\ x\ \ \ \ \ \ The\ x-Coorder\ of\ the\ sculpture.\r\n\ @param\ y\ \ \ \ \ \ The\ y-Coorder\ of\ the\ sculpture.\r\n\ @param\ length\ The\ gallery's\ length.\r\n
+comment2.params=
+comment2.target=void\ steal()
+numComments=3

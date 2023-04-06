@@ -1,5 +1,7 @@
 package gallery;
+
 import shapes.Circle;
+
 /**
  * Let me create and interactive with the alarm.
  *
@@ -42,7 +44,7 @@ public class Alarm {
                 alarma.changeColor("black");
             }
         } else {
-            throw new GalleryException(GalleryException.AlarmNotChange);
+            throw new GalleryException(GalleryException.ALARM_NOT_CHANGE);
         }
     }
 

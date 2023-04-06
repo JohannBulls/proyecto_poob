@@ -1,31 +1,21 @@
 package gallery;
+
 import shapes.Circle;
+
 /**
  * Let me create and modify the sculpture object.
  *
  * @author Sebastian Zamora
  * @author Johann Amaya
- * @version 1.2
+ * @version 1.5
  */
-public class Sculpture {
-    private Circle circle;
-    private static final int size = 10;
-    private int x, y;
-    private int length;
-
-    /**
-     * Constructor for objects of class Sculpture
-     */
-    public Sculpture(String color, int x, int y, int length) {
-        circle = new Circle();
-        circle.changeColor(color);
-        circle.changeSize(size);
-        this.x = x;
-        this.y = y;
-        this.length = length;
-        circle.moveVertical(length - y - 15);
-        circle.moveHorizontal(x - 20);
-    }
+public abstract class Sculpture {
+    protected Circle circle;
+    protected static final int size = 10;
+    protected int x, y;
+    protected boolean state;
+    protected int length;
+    protected String type;
 
     /**
      * Let me make visible the rooms on the Sculpture
@@ -52,17 +42,43 @@ public class Sculpture {
 
     /**
      * Return its position
+     * 
      * @return the sculpture's position
      */
     public int[] location() {
         int[] posiciones = { x, y };
         return posiciones;
     }
-    
+
     /**
      * increase the size of the sculpture.
+     * 
+     * @param increase The increase that for the sculpture.
      */
-    public void enlarge(int increase){
+    public void enlarge(int increase) {
         circle.changeSize(size + increase);
+    }
+
+    /**
+     * Steal the sculpture
+     */
+    public abstract void steal() throws GalleryException;
+
+    /**
+     * Get the sculpture's state.
+     * 
+     * @return whether or not the sculpture is in the room.
+     */
+    public boolean getState() {
+        return state;
+    }
+
+    /**
+     * Return the sculpture's type.
+     * 
+     * @return the sculpture's type.
+     */
+    public String getType() {
+        return type;
     }
 }

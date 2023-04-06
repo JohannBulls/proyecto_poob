@@ -3,23 +3,24 @@ package gallery;
 import shapes.Rectangle;
 
 /**
- * Let me create a Normal room.
+ * Creates a new Room that it doesn't contains sculptures.
  * 
  * @author Sebastian Zamora.
  * @author Johann Amaya.
  * @version 1.0
  */
-public class NormalRoom extends Room {
-
+public class Standby extends Room {
     /**
-     * Create a normal room.
-     * 
-     * @param color   the room´s color.
-     * @param polygon the room's vertices.
-     * @param length  the room´s length.
-     * @throws GalleryException
+     *
+     * Creates a new Room that it doesn't contains sculptures.
+     *
+     * @param color   the color of the room
+     * @param polygon an array of vertices representing the walls of the room
+     * @param length  the length of the room's perimeter
+     * @throws GalleryException if the room could not be created due to invalid
+     *                          polygon parameters
      */
-    public NormalRoom(String color, int[][] polygon, int length) throws GalleryException {
+    public Standby(String color, int[][] polygon, int length) throws GalleryException {
         walls = polygon;
         this.color = color;
         this.length = length;
@@ -31,21 +32,9 @@ public class NormalRoom extends Room {
         }
     }
 
-    public void displaySculpture(String type, int x, int y)
-            throws java.lang.reflect.InvocationTargetException, IllegalAccessException, InstantiationException,
-            ClassNotFoundException, NoSuchMethodException,
-            GalleryException {
-        if (escultura == null) {
-            if (poligono.contains(x, y)) {
-                escultura = (Sculpture) Class.forName("gallery." + type)
-                        .getConstructor(String.class, int.class, int.class, int.class).newInstance(color, x, y, length);
-                escultura.makeVisible();
-            } else {
-                throw new GalleryException(GalleryException.OUT_OF_THE_ROOM);
-            }
-        } else {
-            throw new GalleryException(GalleryException.ROOM_HAS_SCULPTURE);
-        }
+    @Override
+    public void displaySculpture(String color, int x, int y) throws GalleryException {
+        throw new GalleryException(GalleryException.STANDBY_ROOM);
     }
 
     @Override
@@ -78,21 +67,12 @@ public class NormalRoom extends Room {
 
     @Override
     public void steal() throws GalleryException {
-        if (escultura != null) {
-            if (guardSeeTheSculpture()) {
-                escultura.steal();
-            } else {
-                escultura.enlarge(5);
-                escultura.makeVisible();
-            }
-        } else {
-            throw new GalleryException(GalleryException.ROOM_HAS_NOT_SCULPTURE);
-        }
+        throw new GalleryException(GalleryException.STANDBY_STEAL);
     }
 
     @Override
-    public boolean hasSculpture() {
-        return escultura.getState();
+    public boolean hasSculpture() throws GalleryException {
+        throw new GalleryException(GalleryException.STANDBY_NOT_SCULPTUER);
     }
 
     @Override
@@ -115,9 +95,6 @@ public class NormalRoom extends Room {
         if (guardia != null) {
             guardia.makeVisible();
         }
-        if (escultura != null) {
-            escultura.makeVisible();
-        }
         repSala.makeVisible();
         alarma.makeVisible();
     }
@@ -132,9 +109,6 @@ public class NormalRoom extends Room {
         }
         if (guardia != null) {
             guardia.makeInvisible();
-        }
-        if (escultura != null) {
-            escultura.makeInvisible();
         }
         repSala.makeInvisible();
         alarma.makeInvisible();
