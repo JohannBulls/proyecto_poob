@@ -47,7 +47,8 @@ public class Unprotected extends Room {
     }
 
     @Override
-    public void alarm(int a, int b) {
+    public void alarm(int cantidadRoom, int length) throws GalleryException {
+        throw new GalleryException(GalleryException.UNPROTECTED_ROOM);
     }
 
     @Override

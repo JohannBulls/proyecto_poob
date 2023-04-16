@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Room
-comment0.text=\r\n\ Let\ me\ create\ an\ interate\ a\ room.\r\n\r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.2\r\n
+comment0.text=\r\n\ Let\ me\ create\ an\ interate\ a\ room.\r\n\r\n\ @author\ Sebastian\ Zamora\r\n\ @author\ Johann\ Amaya\r\n\ @version\ 1.5\r\n
 comment1.params=polygon
 comment1.target=Wall[]\ buildWalls(int[][])
 comment1.text=\r\n\ \r\n\ Builds\ an\ array\ of\ Walls\ using\ the\ given\ polygon\ coordinates.\r\n\ \r\n\ @param\ polygon\ A\ 2D\ array\ of\ integers\ representing\ the\ polygon\ coordinates.\r\n\ @return\ An\ array\ of\ Walls\ representing\ the\ polygon's\ walls.\r\n
@@ -45,7 +45,7 @@ comment3.target=void\ makeInvisible()
 comment3.text=\r\n\ Let\ me\ erase\ the\ view\ of\ the\ walls\r\n
 comment4.params=type\ x\ y
 comment4.target=void\ displaySculpture(java.lang.String,\ int,\ int)
-comment4.text=\r\n\ \r\n\ Displays\ a\ sculpture\ in\ the\ room\ at\ the\ given\ position\ (x,\ y).\r\n\ If\ there\ is\ already\ a\ sculpture\ in\ the\ room,\ it\ throws\ an\ exception.\r\n\ If\ the\ given\ position\ is\ outside\ the\ room,\ it\ throws\ an\ exception.\r\n\ \r\n\ @param\ x\ the\ x-coordinate\ of\ the\ position\ where\ to\ display\ the\ sculpture\r\n\ @param\ y\ the\ y-coordinate\ of\ the\ position\ where\ to\ display\ the\ sculpture\r\n\ @throws\ GalleryException\ if\ there\ is\ already\ a\ sculpture\ in\ the\ room\ or\ the\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ given\ position\ is\ outside\ the\ room\r\n
+comment4.text=\r\n\ \r\n\ Displays\ a\ sculpture\ in\ the\ room\ at\ the\ given\ position\ (x,\ y).\r\n\ If\ there\ is\ already\ a\ sculpture\ in\ the\ room,\ it\ throws\ an\ exception.\r\n\ If\ the\ given\ position\ is\ outside\ the\ room,\ it\ throws\ an\ exception.\r\n\ \r\n\ @param\ x\ the\ x-coordinate\ of\ the\ position\ where\ to\ display\ the\ sculpture\r\n\ @param\ y\ the\ y-coordinate\ of\ the\ position\ where\ to\ display\ the\ sculpture\r\n\ @throws\ GalleryException\ \ \ \ \ \ \ \ \ \ if\ there\ is\ already\ a\ sculpture\ in\ the\ room\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ or\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ the\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ given\ position\ is\ outside\ the\ room\r\n\ @throws\ NoSuchMethodException\r\n\ @throws\ ClassNotFoundException\r\n\ @throws\ InstantiationException\r\n\ @throws\ IllegalAccessException\r\n\ @throws\ InvocationTargetException\r\n
 comment5.params=walls
 comment5.target=java.awt.Polygon\ createPolygon(int[][])
 comment5.text=\r\n\ let\ me\ create\ a\ polygon\ with\ the\ structure\ of\ the\ room\r\n\ \r\n\ @param\ walls\ the\ list\ of\ the\ points\ of\ the\ polygon.\r\n\ @return\ The\ new\ polygon.\r\n

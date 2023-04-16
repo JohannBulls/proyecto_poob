@@ -14,7 +14,7 @@ import java.text.DecimalFormat;
  *
  * @author Sebastian Zamora
  * @author Johann Amaya
- * @version 1.2
+ * @version 1.5
  */
 public abstract class Room {
     protected int[][] walls;
@@ -29,7 +29,6 @@ public abstract class Room {
     protected Alarm alarma;
     protected Rectangle repSala;
     protected List<int[]> posiciones = new ArrayList<>();
-    protected Wall[] repMovimiento;
 
     /**
      * 
@@ -154,7 +153,7 @@ public abstract class Room {
      * @param cantidadRooms the number of rooms in the gallery.
      * @param length        the length of each room in the gallery.
      */
-    public abstract void alarm(int cantidadRooms, int length);
+    public abstract void alarm(int cantidadRooms, int length) throws GalleryException;
 
     /**
      * Returns the coordinates of the southernmost vertex of the room.

@@ -24,13 +24,10 @@ public class NormalRoom extends Room {
         this.color = color;
         this.length = length;
         lineas = buildWalls(walls);
-        boolean couldCreate = couldCreateRoom(walls);
         poligono = createPolygon(walls);
-        if (!couldCreate) {
-            throw new GalleryException(GalleryException.COULD_NOT_CREATE_ROOM);
-        }
     }
 
+    @Override
     public void displaySculpture(String type, int x, int y)
             throws java.lang.reflect.InvocationTargetException, IllegalAccessException, InstantiationException,
             ClassNotFoundException, NoSuchMethodException,

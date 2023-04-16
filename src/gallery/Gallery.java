@@ -58,7 +58,7 @@ public class Gallery {
             makeVisible();
             sala.arrivedGuard("NormalGuard");
             sala.moveGuard(guard[0], guard[1]);
-            sala.displaySculpture("NormalSculpture",sculpture[0], sculpture[1]);
+            sala.displaySculpture("NormalSculpture", sculpture[0], sculpture[1]);
         } catch (Exception e) {
             exepcion = e.getMessage();
             confirm = false;
@@ -77,14 +77,9 @@ public class Gallery {
         try {
             if (problem || rooms.size() == 0) {
                 if (!rooms.containsKey(color)) {
-                    // intersect(polygon);
-                    if (confirm) {
-                        NormalRoom room = new NormalRoom(color, polygon, width);
-                        rooms.put(color, room);
-                        rooms.get(color).alarm(rooms.size(), length);
-                    } else {
-                        throw new GalleryException(GalleryException.INTERSECT_ROOM);
-                    }
+                    NormalRoom room = new NormalRoom(color, polygon, width);
+                    rooms.put(color, room);
+                    rooms.get(color).alarm(rooms.size(), length);
                 } else {
                     throw new GalleryException(GalleryException.ROOM_EXIST);
                 }
@@ -107,22 +102,15 @@ public class Gallery {
      */
     public void buildRoom(String type, String color, int[][] polygon)
             throws java.lang.reflect.InvocationTargetException, NoSuchMethodException, IllegalAccessException,
-            InstantiationException, ClassNotFoundException {
+            InstantiationException, ClassNotFoundException, GalleryException {
         confirm = true;
         try {
             if (problem || rooms.size() == 0) {
                 if (!rooms.containsKey(color)) {
-                    // intersect(polygon);
-                    if (confirm) {
-                        Class<?> objeto = Class.forName("gallery." + type);
-                        Constructor<?> instancia = objeto.getConstructor(String.class, int[][].class, int.class);
-                        rooms.put(color, (Room) instancia.newInstance(color, polygon, length));
-                        if (type != "Unprotected") {
-                            rooms.get(color).alarm(rooms.size(), length);
-                        }
-                    } else {
-                        throw new GalleryException(GalleryException.INTERSECT_ROOM);
-                    }
+                    Class<?> objeto = Class.forName("gallery." + type);
+                    Constructor<?> instancia = objeto.getConstructor(String.class, int[][].class, int.class);
+                    rooms.put(color, (Room) instancia.newInstance(color, polygon, length));
+                    rooms.get(color).alarm(rooms.size(), length);
                 } else {
                     throw new GalleryException(GalleryException.ROOM_EXIST);
                 }
@@ -163,7 +151,7 @@ public class Gallery {
      * @param x    the x's position of the sculpture.
      * @param y    the y's position of the sculpture.
      */
-    public void displaySculpture(String type, String room, int x, int y){
+    public void displaySculpture(String type, String room, int x, int y) {
         confirm = true;
         try {
             if (rooms.containsKey(room)) {
